@@ -1,10 +1,22 @@
 source 'https://rubygems.org'
-
+ruby '2.0.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
+
+gem 'redis'
+gem 'sucker_punch'
+gem 'fog'
+gem 'puma'
+gem 'dotenv'
+gem 'rails_12factor'
+gem 'dalli'
+gem 'memcachier'
+gem 'mini_magick'
+gem 'rack-mini-profiler'
+gem 'quiet_assets'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
