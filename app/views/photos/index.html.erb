@@ -1,0 +1,37 @@
+<h1>Listing photos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Iptc</th>
+      <th>Data</th>
+      <th>Caption</th>
+      <th>Byline</th>
+      <th>Sizes</th>
+      <th>S3 key</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @photos.each do |photo| %>
+      <tr>
+        <td><%= photo.iptc %></td>
+        <td><%= photo.data %></td>
+        <td><%= photo.caption %></td>
+        <td><%= photo.byline %></td>
+        <td><%= photo.sizes %></td>
+        <td><%= photo.s3_key %></td>
+        <td><%= link_to 'Show', photo %></td>
+        <td><%= link_to 'Edit', edit_photo_path(photo) %></td>
+        <td><%= link_to 'Destroy', photo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Photo', new_photo_path %>

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  markdown: MyText
+  slug: MyString
+  past_slugs: 
+  metadata: 
+  title: MyString
+  template: MyText
+  html: MyText
+
+two:
+  markdown: MyText
+  slug: MyString
+  past_slugs: 
+  metadata: 
+  title: MyString
+  template: MyText
+  html: MyText

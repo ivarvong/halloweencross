@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Iptc:</strong>
+  <%= @photo.iptc %>
+</p>
+
+<p>
+  <strong>Data:</strong>
+  <%= @photo.data %>
+</p>
+
+<p>
+  <strong>Caption:</strong>
+  <%= @photo.caption %>
+</p>
+
+<p>
+  <strong>Byline:</strong>
+  <%= @photo.byline %>
+</p>
+
+<p>
+  <strong>Sizes:</strong>
+  <%= @photo.sizes %>
+</p>
+
+<p>
+  <strong>S3 key:</strong>
+  <%= @photo.s3_key %>
+</p>
+
+<%= link_to 'Edit', edit_photo_path(@photo) %> |
+<%= link_to 'Back', photos_path %>
