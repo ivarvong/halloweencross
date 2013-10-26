@@ -13,6 +13,8 @@ class PagesController < ApplicationController
   end
 
   def show_by_slug
+    render text: 'thats a partial, boo' and return if params[:page].first == '_'
+
     @page = Page.where(slug: params[:page]).first
     if @page.present?
       render 'pages/show'
