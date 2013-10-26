@@ -2,5 +2,15 @@
 
 <%= render 'form' %>
 
+
+
+<script>
+	var photo_id = <%= @photo.id %>;
+	var pages = <%= raw Page.all.inject({}){ |obj, page| 
+		obj[page.slug] = page.id
+		obj
+	}.to_json %>;
+</script>
+
 <%= link_to 'Show', @photo %> |
 <%= link_to 'Back', photos_path %>

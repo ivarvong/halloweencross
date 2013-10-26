@@ -1,34 +1,8 @@
-<p id="notice"><%= notice %></p>
+  <%= image_tag "http://d33hg3xs7itdqa.cloudfront.net/#{@photo.s3_key}" %>
 
-<p>
-  <strong>Iptc:</strong>
-  <%= @photo.iptc %>
-</p>
+  Byline: <%= @photo.byline %>
 
-<p>
-  <strong>Data:</strong>
-  <%= @photo.data %>
-</p>
-
-<p>
-  <strong>Caption:</strong>
-  <%= @photo.caption %>
-</p>
-
-<p>
-  <strong>Byline:</strong>
-  <%= @photo.byline %>
-</p>
-
-<p>
-  <strong>Sizes:</strong>
-  <%= @photo.sizes %>
-</p>
-
-<p>
-  <strong>S3 key:</strong>
-  <%= @photo.s3_key %>
-</p>
+  Caption: <%= @photo.caption %>
 
 <%= link_to 'Edit', edit_photo_path(@photo) %> |
 <%= link_to 'Back', photos_path %>

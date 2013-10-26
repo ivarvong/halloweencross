@@ -1,9 +1,9 @@
 Cross::Application.routes.draw do
 
+  get  '/photos/upload' => 'photos#upload'
+  post '/photos/upload/complete' => 'photos#client_upload_complete'
   resources :photos
-  get '/photos/upload' => 'photos#upload'
-  get '/photos/upload/complete' => 'photos#upload_complete'
-
+  
   resources :pages
 
   get '*page' => 'pages#show_by_slug'

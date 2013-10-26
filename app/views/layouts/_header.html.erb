@@ -1,1 +1,1 @@
-<%= raw Page.where(slug: '_header').first.try(:html) || 'no _header defined' %>
+<%= raw Page.where(slug: '_header').first.try(:html) || '<!-- no _header defined -->' %>

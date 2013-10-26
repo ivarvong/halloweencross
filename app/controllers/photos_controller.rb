@@ -1,3 +1,8 @@
+unless Rails.env.production?
+  require 'dotenv'
+  Dotenv.load
+end
+
 class PhotosController < ApplicationController
   before_action :set_photo, only: [:show, :edit, :update, :destroy]
 
@@ -49,6 +54,15 @@ class PhotosController < ApplicationController
         format.json { render json: @photo.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def client_upload_complete            
+      photo = Photo.new(bucket: ENV['S3_BUCKET'], s3_key: params[:key])
+      if photo.save          
+          redirect_to photo_path(photo)
+      else
+          render json: {status: "FAIL"}, status: 402
+      end
   end
 
   # DELETE /photos/1

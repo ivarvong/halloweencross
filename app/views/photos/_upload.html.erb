@@ -1,0 +1,113 @@
+<%
+	unless Rails.env.production? #TODO: rewrite
+		require 'dotenv'
+		Dotenv.load
+	end
+
+	file_key = "uploads/#{SecureRandom.hex(16)}"
+
+	# you have to provide ENV vars for S3_BUCKET, S3_ACCESS_KEY and S3_SECRET_KEY
+	def signature(options = {})
+	  Base64.encode64(
+	    OpenSSL::HMAC.digest(
+	      OpenSSL::Digest::Digest.new('sha1'),
+	      ENV['S3_SECRET_KEY'],
+	      policy({ secret_access_key: ENV['S3_SECRET_KEY'] })
+	    )
+	  ).gsub(/\n/, '')
+	end
+
+	def policy(options = {})
+		obj = {
+			expiration: 10.minutes.from_now.utc.strftime('%Y-%m-%dT%H:%M:%S.000Z'),
+			conditions: [
+				{ bucket: ENV['S3_BUCKET'] },
+				{ acl: "public-read" },
+				["starts-with", "$key", "uploads/"],
+				["starts-with", "$Content-Type", "image/jpeg"],
+				["content-length-range", 2048, 5242880] # 5242880 is 5 megabytes.
+			]
+		}
+		obj = obj.to_json
+		#logger.info(obj)
+	  	Base64.encode64(obj).gsub(/\n|\r/, '')
+	end
+%>
+
+
+<div class="upload-wrapper">	
+	<button class="upload-button btn btn-success btn-block">Upload</button>
+	<input class="file-input" id="files" type="file" name="image" accept="image/*" capture />
+	<div class="status"></div>
+</div>
+
+<script>
+
+	$(document).ready(function(){
+		$('.file-input').css('opacity', 0.01).css('width', 1).css('height', 1);
+		$('.upload-button').click(function(){
+			$('.file-input').click();			
+		});
+	});  
+
+	function handleFileSelect(evt) {		
+		uploadPhoto(evt.target.files[0]);				
+	}
+	document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+	function uploadPhoto(photo) {
+		var fd = new FormData();
+		fd.append('key', "<%= file_key %>");
+		fd.append('AWSAccessKeyId', "<%= ENV['S3_ACCESS_KEY'] %>");
+		fd.append('acl', "public-read"); 	
+		fd.append('Content-Type', 'image/jpeg');      
+		fd.append('policy', "<%= policy %>");
+		fd.append('signature',"<%= signature %>");
+
+        fd.append('file', photo);
+        
+        var xhr = new XMLHttpRequest();
+		xhr.upload.addEventListener("progress", uploadProgress, false);
+		xhr.addEventListener("load", uploadComplete, false);
+		xhr.addEventListener("error", uploadFailed, false);
+		xhr.addEventListener("abort", uploadCanceled, false);		
+		xhr.open('POST', "https://<%= ENV['S3_BUCKET'] %>.s3.amazonaws.com/", true); 
+		xhr.send(fd);
+	}
+
+	function uploadProgress(evt) {
+		if (evt.lengthComputable) {
+			var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+			var percentStr = percentComplete.toString() + '%';
+			$('.upload-wrapper .status').html(percentStr);
+		}
+	}
+
+	function uploadComplete(evt) {
+	/* This event is raised when the server send back a response */		
+		//console.log('uploadComplete', evt);
+
+		$('.upload-wrapper .status').html("Finishing up..." + evt.target.responseText)
+
+		if (evt.target.status < 310) {
+			$.post('/photos/upload/complete', {key: "<%= file_key %>"})
+			 .success(function(data){
+			 	$('.upload-wrapper .status').html("Done! Boom!");
+			 	window.location.reload();
+			 }).error(function(){
+			 	$('.upload-wrapper .status').html("There was a problem on the last step :(. Please try again.");
+			 });
+		} else {
+			alert("S3 status said '"+evt.target.status+"'. this is a big fail! You need to try again!")
+		}
+	}
+
+	function uploadFailed(evt) {
+		$('.upload-wrapper .status').html("FAIL" + evt.target.responseText);
+	}
+
+	function uploadCanceled(evt) {
+		$('.upload-wrapper .status').html("Cancelled? Why?!" + evt.target.responseText);
+	}
+
+</script>
