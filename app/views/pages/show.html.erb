@@ -1,1 +1,5 @@
 <%= raw @page.html %>
+
+<% @page.photos.each do |photo| %>
+	<%= image_tag "http://d33hg3xs7itdqa.cloudfront.net/#{photo.s3_key}" %><br>
+<% end %>

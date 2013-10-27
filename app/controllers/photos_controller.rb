@@ -65,6 +65,24 @@ class PhotosController < ApplicationController
       end
   end
 
+  def attach
+    @page_photo = PagePhoto.new(photo_id: params[:photo_id].to_i, page_id: params[:page_id], order: 999)
+    if @page_photo.save
+      redirect_to '/photos'
+    else
+      redirect_to '/photos?error_saving'
+    end
+  end
+
+  def detach
+    @page_photo = PagePhoto.where(photo_id: params[:photo_id].to_i, page_id: params[:page_id]).first
+    if @page_photo.destroy
+      redirect_to '/photos'
+    else
+      redirect_to '/photos?error_saving'
+    end
+  end
+
   # DELETE /photos/1
   # DELETE /photos/1.json
   def destroy

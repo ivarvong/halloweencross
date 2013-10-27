@@ -1,37 +1,32 @@
-<h1>Listing photos</h1>
+<% @pages = Page.all %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Iptc</th>
-      <th>Data</th>
-      <th>Caption</th>
-      <th>Byline</th>
-      <th>Sizes</th>
-      <th>S3 key</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+<hr>
+<%= link_to 'Upload', '/photos/upload' %>
+<hr>
 
-  <tbody>
-    <% @photos.each do |photo| %>
-      <tr>
-        <td><%= photo.iptc %></td>
-        <td><%= photo.data %></td>
-        <td><%= photo.caption %></td>
-        <td><%= photo.byline %></td>
-        <td><%= photo.sizes %></td>
-        <td><%= photo.s3_key %></td>
-        <td><%= link_to 'Show', photo %></td>
-        <td><%= link_to 'Edit', edit_photo_path(photo) %></td>
-        <td><%= link_to 'Destroy', photo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<% @photos.each do |photo| %>
+  <div class="edit-photo">
+  <%= image_tag "http://d33hg3xs7itdqa.cloudfront.net/#{photo.s3_key}", width: 200 %>
+  <br><br>
+  <% @pages.each do |page| %>
+    <% if PagePhoto.where(page_id: page.id, photo_id: photo.id).count > 0 %>
+      
+      <%= form_tag("/photos/detach/#{page.id}/#{photo.id}") do %>
+        <%= submit_tag "REMOVE from #{page.slug}" %>
+      <% end %>    
+
+    <% else %>
+      
+      <%= form_tag("/photos/attach/#{page.id}/#{photo.id}") do %>
+        <%= submit_tag "ADD to #{page.slug}" %>
+      <% end %>
+    
     <% end %>
-  </tbody>
-</table>
+  <% end %> 
 
-<br>
-
-<%= link_to 'New Photo', new_photo_path %>
+  <%= link_to 'Show', photo %> / 
+  <%= link_to 'Edit', edit_photo_path(photo) %> / 
+  <%= link_to 'Destroy', photo, method: :delete, data: { confirm: 'Are you sure?' } %>
+  </div>
+<% end %>
+  
