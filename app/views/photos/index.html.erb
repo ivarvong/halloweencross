@@ -2,31 +2,38 @@
 
 <hr>
 <%= link_to 'Upload', '/photos/upload' %>
-<hr>
 
+<table class="table">
 <% @photos.each do |photo| %>
-  <div class="edit-photo">
-  <%= image_tag "http://d33hg3xs7itdqa.cloudfront.net/#{photo.s3_key}", width: 200 %>
-  <br><br>
+<tr>
+
+  <td><%= image_tag "http://d33hg3xs7itdqa.cloudfront.net/#{photo.s3_key}", width: 150 %></td>
+  
   <% @pages.each do |page| %>
+    <td class="edit-association">
     <% if PagePhoto.where(page_id: page.id, photo_id: photo.id).count > 0 %>
       
-      <%= form_tag("/photos/detach/#{page.id}/#{photo.id}") do %>
-        <%= submit_tag "REMOVE from #{page.slug}" %>
+      <%= form_tag("/photos/detach/#{page.id}/#{photo.id}") do # horrible %>
+        <%= submit_tag "REMOVE from #{page.slug}", class: 'btn btn-danger' %>
       <% end %>    
 
     <% else %>
       
       <%= form_tag("/photos/attach/#{page.id}/#{photo.id}") do %>
-        <%= submit_tag "ADD to #{page.slug}" %>
+        <%= submit_tag "ADD to #{page.slug}", class: 'btn btn-success' %>
       <% end %>
     
     <% end %>
+    </td>
   <% end %> 
 
+  <td>
   <%= link_to 'Show', photo %> / 
   <%= link_to 'Edit', edit_photo_path(photo) %> / 
   <%= link_to 'Destroy', photo, method: :delete, data: { confirm: 'Are you sure?' } %>
-  </div>
+  </td>
+
+</tr>
 <% end %>
+</table>
   
