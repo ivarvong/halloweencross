@@ -2,8 +2,7 @@
 
 <% @page.photos.each do |photo| %>
 	<div class="photo" style="margin-bottom: 20px;">
-		<%= image_tag "http://d33hg3xs7itdqa.cloudfront.net/#{photo.s3_key}" %><br>		
-		<p class="caption"><%= photo.caption %></p>
-		| <p class="byline"><%= photo.byline %></p> 
+		<%= image_tag "http://d33hg3xs7itdqa.cloudfront.net/#{photo.s3_key}", alt: '' %><br>		
+		<small class="caption"><%= photo.caption %></small>
 	</div>
 <% end %>
