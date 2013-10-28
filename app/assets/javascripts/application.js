@@ -14,11 +14,6 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
-
-$(document).ready(function() {
-	check_location_path();
-});
-
 var check_location_path = function() {
 	var url = window.location;	
 	$('ul.nav a[href="'+ url +'"]').parent().addClass('active');	
@@ -26,3 +21,10 @@ var check_location_path = function() {
 	    return this.href == url;
 	}).parent().addClass('active');
 }
+
+$(document).ready(function() {
+	check_location_path();
+});
+
+$(document).on('page:load', check_location_path);
+
