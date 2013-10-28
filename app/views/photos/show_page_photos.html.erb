@@ -1,0 +1,38 @@
+<style>
+  .arrange-photos { list-style-type: none; margin: 0; padding: 0; width: 900px; }
+  .arrange-photos li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 200px; height: 90px; font-size: 4em; text-align: center; }
+  </style>
+
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+
+<ul class="arrange-photos">
+<% @photos.each do |photo| %>
+	<li class="photo" data-photo-id="<%= photo.id %>">
+		<%= image_tag "http://d33hg3xs7itdqa.cloudfront.net/#{photo.s3_key}", width: 200 %>
+	</li>
+<% end %>
+</ul>
+
+  <script>
+  $(function() {
+    $( ".arrange-photos" ).sortable({
+    	stop: function(event, ui) {
+    		var ordering = {};
+        	$('.arrange-photos .photo').each(function(index, el) {
+        		var photo_id = parseInt($(el).attr('data-photo-id'), 10);
+        		ordering[index] = photo_id;
+        	});
+        	console.log(ordering);
+        	$.post("/photos/arrange/<%= @page.id %>", {
+        		ordering: ordering
+        	}).success(function(res) {
+        		console.log('OK', res);
+        	}).error(function(res) {
+        		console.log('ERR', res);
+        	});
+    	}    
+  	});
+  	$( ".arrange-photos" ).disableSelection();
+  });
+  </script>

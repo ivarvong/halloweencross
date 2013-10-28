@@ -79,8 +79,36 @@ class PhotosController < ApplicationController
     if @page_photo.destroy
       redirect_to '/photos'
     else
-      redirect_to '/photos?error_saving'
+      redirect_to '/photos?error_destroying'
     end
+  end
+
+  def show_page_photos
+    @page = Page.where(slug: params[:slug]).first
+    @photos = @page.photos
+  end
+
+  def update_page_arrangment
+    @page = Page.find(params[:page_id])
+    @page_photos = PagePhoto.where(page_id: @page.id)
+    ordering = params[:ordering]
+    
+    logger.debug(params)
+    
+    results = []
+
+    ordering.each do |position, photo_id|
+      page_photo = @page_photos.where(photo_id: photo_id.to_i).first
+      page_photo.sort_order = position.to_i
+      results << page_photo.save
+    end
+
+    render text: results
+
+    #  photo = photos.find(photo_id)
+    #  photo.order = index
+    #  photo.save
+    #end
   end
 
   # DELETE /photos/1
