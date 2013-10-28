@@ -56,6 +56,12 @@ class PhotosController < ApplicationController
     end
   end
 
+  def force_iptc
+    photo = Photo.find(params[:id])
+    
+    render json: photo.extract_iptc
+  end
+
   def client_upload_complete            
       photo = Photo.new(bucket: ENV['S3_BUCKET'], s3_key: params[:key])
       if photo.save          

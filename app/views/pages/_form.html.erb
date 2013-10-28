@@ -11,35 +11,18 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :markdown %><br>
-    <%= f.text_area :markdown %>
-  </div>
+
   <div class="field">
     <%= f.label :slug %><br>
     <%= f.text_field :slug %>
   </div>
-  <div class="field">
-    <%= f.label :past_slugs %><br>
-    <%= f.text_field :past_slugs %>
-  </div>
-  <div class="field">
-    <%= f.label :metadata %><br>
-    <%= f.text_field :metadata %>
-  </div>
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :template %><br>
-    <%= f.text_area :template %>
-  </div>
+
   <div class="field">
     <%= f.label :html %><br>
     <%= f.text_area :html %>
   </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn btn-primary' %>
   </div>
 <% end %>

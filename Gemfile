@@ -17,6 +17,7 @@ gem 'memcachier'
 gem 'mini_magick'
 gem 'rack-mini-profiler'
 gem 'quiet_assets'
+gem 'iptc'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'

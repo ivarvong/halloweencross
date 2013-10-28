@@ -6,6 +6,7 @@ Cross::Application.routes.draw do
   post '/photos/detach/:page_id/:photo_id' => 'photos#detach'
   get  '/photos/arrange/:slug' => 'photos#show_page_photos'
   post '/photos/arrange/:page_id' => 'photos#update_page_arrangment'
+  get  '/photos/:id/force_iptc' => 'photos#force_iptc'
   resources :photos
   
   resources :pages
