@@ -14,13 +14,13 @@
     <% if PagePhoto.where(page_id: page.id, photo_id: photo.id).count > 0 %>
       
       <%= form_tag("/photos/detach/#{page.id}/#{photo.id}") do %>
-        <%= submit_tag "REMOVE from #{page.slug}", class: 'btn btn-danger' %>
+        <%= submit_tag "- #{page.slug}", class: 'btn btn-danger' %>
       <% end %>    
 
     <% else %>
       
       <%= form_tag("/photos/attach/#{page.id}/#{photo.id}") do %>
-        <%= submit_tag "ADD to #{page.slug}", class: 'btn btn-success' %>
+        <%= submit_tag "+ #{page.slug}", class: 'btn btn-success' %>
       <% end %>
     
     <% end %>
