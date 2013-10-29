@@ -14,5 +14,8 @@
 
 .container {
 	max-width: 1030px !important;
-	margin-top: 50px;
+
+}
+.main {
+		margin-top: 50px;
 }
